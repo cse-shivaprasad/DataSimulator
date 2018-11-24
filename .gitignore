@@ -1,1 +1,11 @@
 .idea/
+
+# Compiled files
+*.class
+
+# Log files
+*.log
+
+# Package files
+*.jar
+
