@@ -1,27 +1,28 @@
 package com.datasimulator.orchestrator;
 
-import com.datasimulator.config.BatchTemplateConfig;
+import com.datasimulator.config.TemplateConfig;
 import com.datasimulator.processor.BatchSimulationProcessor;
+import com.datasimulator.processor.SimulationProcessor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Component
-@Getter @Setter
+@Service
+@Setter @Getter
 public class BatchSimulationOrchestrator {
 
     @Autowired
-    private BatchTemplateConfig templateConfig;
-
-    //private final BatchSimulationProcessor processor = new BatchSimulationProcessor();
+    private TemplateConfig templateConfig;
 
     public void orchestrateBatchSimulationProcess(String configFile) throws Exception{
-
-        BatchSimulationProcessor processor = new BatchSimulationProcessor(templateConfig);
-        BatchTemplateConfig templateConfig = processor.preProcesDataSimulationConfig(this.templateConfig);
-        processor.processDataSimulation(templateConfig);
+        //TODO : Optimize below code using functional composition or builder pattern
+        SimulationProcessor processor = new BatchSimulationProcessor(templateConfig)
+                                                .preProcesDataSimulationConfig(templateConfig)
+                                                .processDataSimulation(templateConfig)
+                                                .postProcess();
+        //TemplateConfig templateConfig = processor.preProcesDataSimulationConfig(this.templateConfig);
+        //processor.processDataSimulation(templateConfig);
         //processor.postProcess();
     }
 }
