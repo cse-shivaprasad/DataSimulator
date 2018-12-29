@@ -4,13 +4,15 @@ import com.semihunaldi.excelorm.BaseExcel;
 import com.semihunaldi.excelorm.annotations.Excel;
 import com.semihunaldi.excelorm.annotations.ExcelColumn;
 import lombok.*;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
 
+@ComponentScan({"com.datasimulator.config"})
 @Component
-@Excel(firstRow = 1, firstCol = 0, sheetName = "BatchFieldConfig")
+@Excel(firstRow = 1, firstCol = 0, sheetName = "FieldConfig")
 @Data
-public class BatchFieldConfig extends BaseExcel{
+public class FieldConfig extends BaseExcel{
 
     @ExcelColumn(col = 0, columnName = "fieldName")
     private  String fieldName;
@@ -39,6 +41,10 @@ public class BatchFieldConfig extends BaseExcel{
     @ExcelColumn(col = 8, columnName = "formula")
     private String formula;
 
+    @ExcelColumn(col = 9, columnName = "locale")
+    private String locale = "en-US";
+
+    // TODO:Seperate out to impose immutability
     private String generatedValue;
 
 }

@@ -3,22 +3,21 @@ package com.datasimulator.config;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-
-@Service
+@ComponentScan({"com.datasimulator.config"})
+@Component
 @Getter @Setter @ToString
-public class BatchTemplateConfig {
+@PropertySource("classpath:batchfeed_config.properties")
+public class TemplateConfig {
 
     @Value("${datasimulator.batch.jobName}")
     private String jobName;
@@ -32,24 +31,25 @@ public class BatchTemplateConfig {
     @Value("${datasimulator.batch.outputConfigPath}")
     private String outputConfigPath;
 
-    @Value("${datasimulator.batch.recordCount}")
+    @Value("${datasimulator.batch.outputRepo}")
     private String outputRepo;
 
-    @Value("${datasimulator.batch.recordCount}")
+    @Value("${datasimulator.batch.executionFrequency}")
     private String executionFrequency;
 
     @Value("${datasimulator.batch.recordCount}")
-    private String recordCount;
+    private Long recordCount = 100l;
 
     @Value("${datasimulator.batch.locale}")
-    private String locale;
+    private String locale="en-US";
 
     @Value("${datasimulator.batch.batchFieldConfigPath}")
     private String batchFieldConfigPath;
 
+    //TODO : To decide between map and list for fieldConfig
+    private Map<String,FieldConfig> fieldConfigMap = new TreeMap<String, FieldConfig>();
 
-    private Map<String,BatchFieldConfig> fieldConfigMap = new TreeMap<String, BatchFieldConfig>();
-    private List<BatchFieldConfig> fieldConfigList = new ArrayList<>();
+    private List<FieldConfig> fieldConfigList = new ArrayList<>();
 
 
 }
