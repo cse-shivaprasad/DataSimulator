@@ -48,7 +48,7 @@ public class ExcelReadingTest {
         //ExcelDataContext excel = (ExcelDataContext) dataContext;
         Schema schema = excel.getSchemas().get(1);
         //schema.getTableNames().stream().map(tableName -> tableName+",").forEach(System.out::print);
-        Table table = schema.getTableByName("BatchFieldConfig");
+        Table table = schema.getTableByName("FieldConfig");
         assertNotNull(table);
 
         table.getColumnNames().stream().map(name->name+",").forEach(System.out::print);

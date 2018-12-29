@@ -1,7 +1,7 @@
 package com.datasimulator.metadata;
 
-import com.datasimulator.config.BatchFieldConfig;
-import com.datastax.driver.core.querybuilder.Batch;
+import com.datasimulator.config.FieldConfig;
+import com.datasimulator.generator.FakeValueGenerator;
 import com.semihunaldi.excelorm.ExcelReader;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -14,19 +14,18 @@ import java.util.List;
 
 public class CustomFieldTypeTest {
 
-    private List<BatchFieldConfig> fieldConfigList;
+    private List<FieldConfig> fieldConfigList;
 
     @Before
     public void preprocessFieldConfig()throws Exception{
         File file = new File("/Users/Shivaprasad/Documents/workspace_java/DataSimulator/src/main/resources/batchconfig/templates/BatchConsumerTransactions.xlsx");
         ExcelReader excelReader = new ExcelReader();
-        fieldConfigList = excelReader.read(file, BatchFieldConfig.class);
+        fieldConfigList = excelReader.read(file, FieldConfig.class);
     }
-
     @Test
     public void testRandomStringValue() throws  Exception{
 
-        BatchFieldConfig fieldConfig = fieldConfigList.get(13);
+        FieldConfig fieldConfig = fieldConfigList.get(13);
         JSONObject possibleValues = new JSONObject(fieldConfig.getFieldValueRange());
         JSONArray arrayValues = possibleValues.getJSONArray("POSSIBLE_VALUES");
 
@@ -59,12 +58,35 @@ public class CustomFieldTypeTest {
 
     @Test
     public void testMasterCardValue(){
-        String value = CustomFieldType.valueOf(CustomFieldType.MASTER_CARD_NUMBER.getFieldName())
-                .getGeneratorFunction()
-                .apply(fieldConfigList.get(3));
-        System.out.println("Random MasterCard Number :"+value);
-        Assert.assertTrue(value.contains("-"));
+        FieldConfig fieldConfig = new FieldConfig();
+        fieldConfig.setCustomDataType("MASTER_CARD_NUMBER");
+        for(int i=0; i<25; i++) {
+            String cardNumber = FakeValueGenerator.getCreditCardNumber(fieldConfig);
+            System.out.println("Random MasterCard Number :" + cardNumber);
+            Assert.assertTrue(cardNumber.contains("-") && cardNumber.startsWith("6771"));
+        }
     }
 
+    @Test
+    public void testVisaCardValue(){
+        FieldConfig fieldConfig = new FieldConfig();
+        fieldConfig.setCustomDataType("DISCOVER_CARD_NUMBER");
+        for(int i=0; i<25; i++){
+            String cardNumber = FakeValueGenerator.getCreditCardNumber(fieldConfig);
+            System.out.println("Random Discover Card Number :"+cardNumber);
+            int length = cardNumber.length();
+            Assert.assertTrue(cardNumber.contains("-") && (length==19 || length ==24) );
+        }
+
+
+    }
+    /*@Test
+    public void testNameValue(){
+        String value = CustomFieldType.valueOf(CustomFieldType.NAME.getFieldName())
+                .getGeneratorFunction()
+                .apply(FakeValueGenerator.getName(fieldConfigList.get(3)));
+        System.out.println("Random MasterCard Number :"+value);
+        Assert.assertTrue(value.contains("-"));
+    }*/
 
 }
