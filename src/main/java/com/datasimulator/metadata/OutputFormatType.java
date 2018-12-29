@@ -1,5 +1,6 @@
 package com.datasimulator.metadata;
 
+import com.datasimulator.formatter.DataFormatter;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,7 +11,9 @@ public enum OutputFormatType {
 
     JSON("JSON","com.datasimulator.formatter.JsonDataFormatter"),
 
-    XML("XML","com.datasimulator.formatter.XMLDataFormatter");
+    XML("XML","com.datasimulator.formatter.XMLDataFormatter"),
+
+    FIXED_WIDTH("XML","com.datasimulator.formatter.FixedWidthDataFormatter");
 
     private String outputFormat;
 
@@ -19,5 +22,9 @@ public enum OutputFormatType {
     private OutputFormatType(String outputFormat, String formatterClassName){
         this.outputFormat = outputFormat;
         this.formatterClassName = formatterClassName;
+    }
+
+    public DataFormatter getFormatterInstance() throws Exception{
+        return (DataFormatter) Class.forName(formatterClassName).newInstance();
     }
 }
