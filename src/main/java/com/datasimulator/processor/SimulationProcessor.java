@@ -1,10 +1,12 @@
 package com.datasimulator.processor;
 
-public interface SimulationProcessor<PRE_PROCESS_INPUT,PRE_PROCESS_OUTPUT,PROCESSING_INPUT,DATAPROCESSING_OUTPUT,POSTPROCESS_INPUT> {
+import com.datasimulator.config.TemplateConfig;
 
-    public PRE_PROCESS_OUTPUT preProcesDataSimulationConfig(PRE_PROCESS_INPUT preprocessInput) throws Exception;
+public interface SimulationProcessor {
 
-    public DATAPROCESSING_OUTPUT processDataSimulation(PROCESSING_INPUT processingInput) throws Exception;
+    public SimulationProcessor preProcesDataSimulationConfig(TemplateConfig preprocessInput) throws Exception;
 
-    public void postProcess(POSTPROCESS_INPUT postprocessInput);
+    public SimulationProcessor processDataSimulation(TemplateConfig processingInput) throws Exception;
+
+    public SimulationProcessor postProcess() throws Exception;
 }
