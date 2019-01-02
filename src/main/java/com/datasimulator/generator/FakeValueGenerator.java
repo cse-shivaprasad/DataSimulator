@@ -95,16 +95,22 @@ public class FakeValueGenerator {
     public static String generateFieldValue(FieldConfig fieldConfig, Function<FieldConfig,String> genFunction){
 
         String randomValue = genFunction.apply(fieldConfig);
-        String isUniqueValue = fieldConfig.getIsUnique();
         String fieldName = fieldConfig.getFieldName();
-        if(isUniqueValue != null && isUniqueValue.equalsIgnoreCase("Y")){
+        if(isUniqueField(fieldConfig.getIsUnique())){
             uniqueValuesMap.computeIfAbsent(fieldName, f -> new ArrayList<>()).add(randomValue);
-            while(uniqueValuesMap.get(fieldConfig.getFieldName()).contains(randomValue)){
+            while(isFieldValueGeneratedAlready(fieldConfig, randomValue)){
                 randomValue = genFunction.apply(fieldConfig);
             }
-            uniqueValuesMap.get(fieldName).add(randomValue);
         }
         return randomValue;
+    }
+
+    private static boolean isFieldValueGeneratedAlready(FieldConfig fieldConfig, String randomValue) {
+        return uniqueValuesMap.get(fieldConfig.getFieldName()).contains(randomValue);
+    }
+
+    private static boolean isUniqueField(String isUniqueValue) {
+        return isUniqueValue != null && isUniqueValue.equalsIgnoreCase("Y");
     }
 
     private static boolean isValidLocale(String locale){
