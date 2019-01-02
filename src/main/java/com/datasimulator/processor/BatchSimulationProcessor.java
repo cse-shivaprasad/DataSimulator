@@ -39,7 +39,7 @@ public class BatchSimulationProcessor implements SimulationProcessor{
         readFieldConfigAndMapToTemplateConfig(templateConfig);
         dataFormatter = OutputFormatType.valueOf(templateConfig.getOutputDataFormat()).getFormatterInstance();
         outputWriter = RepoWriterType.valueOf(templateConfig.getOutputRepo()).getWriterInstance();
-        outputWriter.initializeResource(templateConfig.getOutputConfigPath());
+        outputWriter.initializeResource(templateConfig);
         return  this;
     }
 
@@ -50,12 +50,8 @@ public class BatchSimulationProcessor implements SimulationProcessor{
         //TODO : Keep the code optimized to not to depend on record count
         //TODO : Apply CompletableFuture/Reactive approach here.
         for(long count=1 ; count <= templateConfig.getRecordCount(); count++){
-
             generateRandomContent(templateConfig);
-
-            String formattedRowContent = dataFormatter.formatData(templateConfig.getFieldConfigList());
-
-            outputWriter.writeOutputContent(formattedRowContent);
+            outputWriter.writeOutputContent(dataFormatter,templateConfig.getFieldConfigList());
         }
         return this;
     }
@@ -69,10 +65,8 @@ public class BatchSimulationProcessor implements SimulationProcessor{
     public void readFieldConfigAndMapToTemplateConfig(TemplateConfig templateConfig) throws Exception{
 
         File file = new File(templateConfig.getBatchFieldConfigPath());
-
         List<FieldConfig> fieldConfigList = new ExcelReader().read(file, FieldConfig.class);
-
-        //TemplateConfig is getting mutated. Code to be optimized to make it immutable.
+        //TODO:TemplateConfig is getting mutated. Code to be optimized to make it immutable.
         templateConfig.setFieldConfigList(fieldConfigList);
 
         logger.info("Template Config Object Post Read :" + templateConfig);
@@ -93,8 +87,8 @@ public class BatchSimulationProcessor implements SimulationProcessor{
     private TemplateConfig mapFieldConfigToBatchTemplate(List<FieldConfig> batchFieldConfigList){
 
         Map<String, FieldConfig> fieldConfigMap = batchFieldConfigList.stream()
-                                                            .collect(Collectors.toMap(FieldConfig::getFieldName,
-                                                                        fieldConfig -> fieldConfig));
+                                                        .collect(Collectors.toMap(FieldConfig::getFieldName,
+                                                                fieldConfig -> fieldConfig));
         templateConfig.setFieldConfigMap(fieldConfigMap);
         return  templateConfig;
     }

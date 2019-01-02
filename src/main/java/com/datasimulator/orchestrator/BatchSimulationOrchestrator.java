@@ -21,8 +21,5 @@ public class BatchSimulationOrchestrator {
                                                 .preProcesDataSimulationConfig(templateConfig)
                                                 .processDataSimulation(templateConfig)
                                                 .postProcess();
-        //TemplateConfig templateConfig = processor.preProcesDataSimulationConfig(this.templateConfig);
-        //processor.processDataSimulation(templateConfig);
-        //processor.postProcess();
     }
 }

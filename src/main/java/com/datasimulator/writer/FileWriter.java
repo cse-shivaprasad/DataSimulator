@@ -1,13 +1,18 @@
 package com.datasimulator.writer;
 
+import com.datasimulator.config.FieldConfig;
+import com.datasimulator.formatter.DataFormatter;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Formatter;
+import java.util.List;
 
-public class FileWriter implements OutputWriter<String,String> {
+public class FileWriter implements OutputWriter<String> {
 
     private BufferedWriter writer;
 
@@ -24,8 +29,9 @@ public class FileWriter implements OutputWriter<String,String> {
     }
 
     @Override
-    public void writeOutputContent(String outputContent)throws Exception{
-        writer.write(outputContent);
+    public void writeOutputContent(DataFormatter formatter, List<FieldConfig> fieldValues)throws Exception{
+        String formattedContent = formatter.formatData(fieldValues);
+        writer.write(formattedContent);
         writer.newLine();
         writer.flush();
     }

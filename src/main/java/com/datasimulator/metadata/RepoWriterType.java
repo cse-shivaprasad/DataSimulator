@@ -13,6 +13,8 @@ public enum RepoWriterType {
 
     SQL_DB("SQL_DB","com.datasimulator.writer.SqlWriter"),
 
+    MONGO_DB("MONGO_DB","com.datasimulator.writer.MongoDBWriter"),
+
     KAFKA("KAFKA","com.datasimulator.writer.KafkaWriter");
 
     private String repoType;

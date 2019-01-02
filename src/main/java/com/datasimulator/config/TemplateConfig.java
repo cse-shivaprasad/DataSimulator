@@ -28,11 +28,14 @@ public class TemplateConfig {
     @Value("${datasimulator.batch.outputDelimiter}")
     private String outputDelimiter;
 
-    @Value("${datasimulator.batch.outputConfigPath}")
-    private String outputConfigPath;
+    @Value("${datasimulator.batch.outputFilePath}")
+    private String outputFilePath;
 
     @Value("${datasimulator.batch.outputRepo}")
     private String outputRepo;
+
+    @Value("${datasimulator.batch.targetConfigPath}")
+    private String targetConfigPath;
 
     @Value("${datasimulator.batch.executionFrequency}")
     private String executionFrequency;

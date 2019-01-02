@@ -74,14 +74,4 @@ public class RangeValueGenerator {
     private boolean isNotUniqueField(FieldConfig fieldConfig){
         return Objects.isNull(fieldConfig.getIsUnique()) || fieldConfig.getIsUnique().equalsIgnoreCase("N");
     }
-
-    private boolean isFieldNotAddedToMap(String fieldName){
-        return !uniqueValuesMap.containsKey(fieldName);
-    }
-
-    private boolean addRandomFieldAndValueToMap(String fieldName, String randomValue){
-        uniqueValuesMap.put(fieldName, new ArrayList<>());
-        return uniqueValuesMap.get(fieldName).add(randomValue);
-    }
-
 }

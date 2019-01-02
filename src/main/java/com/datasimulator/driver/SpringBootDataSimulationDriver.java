@@ -31,7 +31,6 @@ public class SpringBootDataSimulationDriver implements CommandLineRunner{
             System.out.println("Argument Count Mismatch. Exiting the process");
             throw new IllegalArgumentException();
         }
-        System.out.println(">>>>>>>> Job Name>>>>>>>>>"+batchSimulationOrchestrator.getTemplateConfig());
-
+        batchSimulationOrchestrator.orchestrateBatchSimulationProcess(args[0]);
     }
 }

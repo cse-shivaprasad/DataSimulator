@@ -1,6 +1,11 @@
 package com.datasimulator.writer;
 
-public class ConsoleWriter  implements OutputWriter<String,String>{
+import com.datasimulator.config.FieldConfig;
+import com.datasimulator.formatter.DataFormatter;
+
+import java.util.List;
+
+public class ConsoleWriter  implements OutputWriter<String>{
 
     @Override
     public void initializeResource(String config) throws Exception {
@@ -8,8 +13,8 @@ public class ConsoleWriter  implements OutputWriter<String,String>{
         // As it's a console writing there is no initialization involved.
     }
     @Override
-    public void writeOutputContent(String outputContent){
-        System.out.println(outputContent);
+    public void writeOutputContent(DataFormatter formatter, List<FieldConfig> fieldValues) throws Exception{
+        System.out.println(formatter.formatData(fieldValues));
     }
 
     @Override
